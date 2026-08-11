@@ -1,3 +1,4 @@
+```tsx
 "use client";
 
 import { FormEvent, useState } from "react";
@@ -12,7 +13,7 @@ export default function SignupPage() {
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
 
-  async function handleSignup(e: FormEvent) {
+  async function handleSignup(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
     setLoading(true);
@@ -25,6 +26,7 @@ export default function SignupPage() {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            Accept: "application/json",
           },
           body: JSON.stringify({
             full_name: fullName,
@@ -36,29 +38,30 @@ export default function SignupPage() {
 
       const data = await response.json();
 
-     if (!response.ok) {
-  if (typeof data.detail === "string") {
-    setMessage(data.detail);
-  } else if (Array.isArray(data.detail)) {
-    setMessage(
-      data.detail
-        .map((error: any) => error.msg)
-        .join(", ")
-    );
-  } else {
-    setMessage("Signup failed");
-  }
+      if (!response.ok) {
+        if (typeof data.detail === "string") {
+          setMessage(data.detail);
+        } else if (Array.isArray(data.detail)) {
+          setMessage(
+            data.detail
+              .map((error: { msg: string }) => error.msg)
+              .join(", ")
+          );
+        } else {
+          setMessage("Signup failed");
+        }
 
-  return;
-}
+        return;
+      }
 
       setMessage("Account created successfully! 🎉");
 
       setTimeout(() => {
         router.push("/login");
       }, 1000);
-    } catch {
-      setMessage("Backend server is not running.");
+    } catch (error) {
+      console.error(error);
+      setMessage("Unable to connect to backend.");
     } finally {
       setLoading(false);
     }
@@ -122,6 +125,7 @@ export default function SignupPage() {
         <p className="mt-6 text-center text-sm text-gray-600">
           Already have an account?{" "}
           <button
+            type="button"
             onClick={() => router.push("/login")}
             className="text-blue-600 font-semibold hover:underline"
           >
@@ -132,3 +136,4 @@ export default function SignupPage() {
     </main>
   );
 }
+```
