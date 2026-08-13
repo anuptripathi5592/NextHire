@@ -12,24 +12,27 @@ export default function SignupPage() {
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
 
-  async function handleSignup(e: FormEvent<HTMLFormElement>) {
+  async function handleSignup(e: FormEvent) {
     e.preventDefault();
 
     setLoading(true);
     setMessage("");
 
     try {
-      const response = await fetch("http://127.0.0.1:8000/auth/signup", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          full_name: fullName,
-          email: email,
-          password: password,
-        }),
-      });
+      const response = await fetch(
+        "http://127.0.0.1:8000/auth/signup",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            full_name: fullName,
+            email: email,
+            password: password,
+          }),
+        }
+      );
 
       const data = await response.json();
 
@@ -64,7 +67,9 @@ export default function SignupPage() {
   return (
     <main className="min-h-screen flex items-center justify-center bg-gray-50">
       <div className="w-full max-w-md bg-white p-8 rounded-xl shadow">
-        <h1 className="text-3xl font-bold mb-2">Create Account 🚀</h1>
+        <h1 className="text-3xl font-bold mb-2">
+          Create Account 🚀
+        </h1>
 
         <p className="text-gray-600 mb-6">
           Join NextHire and start your career journey.
@@ -109,7 +114,9 @@ export default function SignupPage() {
         </form>
 
         {message && (
-          <p className="mt-4 text-center text-sm">{message}</p>
+          <p className="mt-4 text-center text-sm">
+            {message}
+          </p>
         )}
 
         <p className="mt-6 text-center text-sm text-gray-600">
@@ -125,3 +132,4 @@ export default function SignupPage() {
     </main>
   );
 }
+

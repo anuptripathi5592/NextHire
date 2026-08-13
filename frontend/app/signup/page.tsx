@@ -1,4 +1,3 @@
-```tsx
 "use client";
 
 import { FormEvent, useState } from "react";
@@ -13,7 +12,7 @@ export default function SignupPage() {
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
 
-  async function handleSignup(e: FormEvent<HTMLFormElement>) {
+  async function handleSignup(e: FormEvent) {
     e.preventDefault();
 
     setLoading(true);
@@ -26,7 +25,6 @@ export default function SignupPage() {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            Accept: "application/json",
           },
           body: JSON.stringify({
             full_name: fullName,
@@ -59,9 +57,8 @@ export default function SignupPage() {
       setTimeout(() => {
         router.push("/login");
       }, 1000);
-    } catch (error) {
-      console.error(error);
-      setMessage("Unable to connect to backend.");
+    } catch {
+      setMessage("Backend server is not running.");
     } finally {
       setLoading(false);
     }
@@ -125,7 +122,6 @@ export default function SignupPage() {
         <p className="mt-6 text-center text-sm text-gray-600">
           Already have an account?{" "}
           <button
-            type="button"
             onClick={() => router.push("/login")}
             className="text-blue-600 font-semibold hover:underline"
           >
@@ -136,4 +132,3 @@ export default function SignupPage() {
     </main>
   );
 }
-```
